@@ -1,5 +1,7 @@
 package us.odm.producer;
 
+import org.apache.kafka.common.serialization.IntegerDeserializer;
+import org.apache.kafka.common.serialization.IntegerSerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.springframework.boot.SpringApplication;
@@ -22,7 +24,7 @@ public class ProducerApplication {
 	}
 
 	@Bean
-	public ProducerFactory<String, Subscription> producerFactory() {
+	public ProducerFactory<Integer, Subscription> producerFactory() {
 		return new DefaultKafkaProducerFactory<>(producerConfigs());
 	}
 
@@ -30,13 +32,14 @@ public class ProducerApplication {
 	public Map<String, Object> producerConfigs() {
 		Map<String, Object> props = new HashMap<>();
 		props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-		props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+		props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, IntegerSerializer.class);
 		props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 		return props;
 	}
 
 	@Bean
-	public KafkaTemplate<String, Subscription> kafkaTemplate() {
+	public KafkaTemplate<Integer, Subscription> kafkaTemplate() {
+
 		return new KafkaTemplate<>(producerFactory());
 	}
 

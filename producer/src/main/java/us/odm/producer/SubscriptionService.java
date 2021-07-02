@@ -12,19 +12,21 @@ import org.springframework.util.concurrent.ListenableFuture;
 public class SubscriptionService {
 
     @Autowired
-    KafkaTemplate<String, Subscription> template;
+    KafkaTemplate<Integer, Subscription> template;
 
     public boolean createSub(Subscription sub) {
-        ListenableFuture<SendResult<String, Subscription>> future =
-                template.send("sub-events", sub);
-        KafkaSendCallback<String, Subscription> callback = new KafkaSendCallback<String, Subscription>() {
+        ListenableFuture<SendResult<Integer, Subscription>> future =
+                template.send("sub-events", sub.getId(), sub);
+        KafkaSendCallback<Integer, Subscription> callback =
+                new KafkaSendCallback<Integer, Subscription>() {
             @Override
             public void onFailure(KafkaProducerException ex) {
+
                 System.out.println(ex.getMessage());
             }
 
             @Override
-            public void onSuccess(SendResult<String, Subscription> result) {
+            public void onSuccess(SendResult<Integer, Subscription> result) {
                 System.out.println(result.getRecordMetadata().toString());
             }
         };
