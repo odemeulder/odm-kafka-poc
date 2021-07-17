@@ -1,6 +1,6 @@
 spring:
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: kafka-service:9092
     consumer:
       # Configures the Spring Kafka ErrorHandlingDeserializer that delegates to the 'real' deserializers
       key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
@@ -9,4 +9,5 @@ spring:
       # Delegate deserializers
       spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
       spring.deserializer.value.delegate.class: io.confluent.kafka.serializers.KafkaAvroDeserializer
-
+server:
+  port : 8081
